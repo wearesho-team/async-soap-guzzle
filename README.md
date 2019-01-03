@@ -1,23 +1,21 @@
 # Asynchronous SOAP client
 
-[![Build Status](https://travis-ci.org/meng-tian/async-soap-guzzle.svg?branch=master)](https://travis-ci.org/meng-tian/async-soap-guzzle)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/meng-tian/async-soap-guzzle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/meng-tian/async-soap-guzzle/?branch=master)
-[![codecov.io](https://codecov.io/github/meng-tian/async-soap-guzzle/coverage.svg?branch=master)](https://codecov.io/github/meng-tian/async-soap-guzzle?branch=master)
+[![Build Status](https://travis-ci.org/wearesho-team/async-soap-guzzle.svg?branch=master)](https://travis-ci.org/wearesho-team/async-soap-guzzle)
+[![codecov.io](https://codecov.io/github/wearesho-team/async-soap-guzzle/coverage.svg?branch=master)](https://codecov.io/github/wearesho-team/async-soap-guzzle?branch=master)
 
 An asynchronous SOAP client build on top of Guzzle. The `SoapClient` implements [meng-tian/php-async-soap](https://github.com/meng-tian/php-async-soap).
 
-## Requirement
-PHP 5.5 --enablelibxml --enable-soap
-
-## Install
+## Installation
 ```
-composer require meng-tian/async-soap-guzzle
+composer require wearesho-team/async-soap-guzzle
 ```
 
 ## Usage
 ```php
+<?php
+
 use GuzzleHttp\Client;
-use Meng\AsyncSoap\Guzzle\Factory;
+use Wearesho\AsyncSoap\Guzzle\Factory;
 
 $factory = new Factory();
 $client = $factory->create(new Client(), 'http://www.webservicex.net/Statistics.asmx?WSDL');
@@ -34,5 +32,14 @@ $promise = $client->GetStatistics(['X' => [1,2,3]]);
 $result = $promise->wait();
 ```
 
+## Requirements
+- PHP ^7.1
+- ext-xml
+- ext-soap
+
+## Contributors
+- [Meng Tian](mailto:tianmeng94@hotmail.com)
+- [Roman Varkuta](mailto:roman.varkuta@gmail.com)
+
 ## License
-This library is released under [MIT](https://github.com/meng-tian/async-soap-guzzle/blob/master/LICENSE) license.
+This library is released under [MIT](./LICENSE) license.
