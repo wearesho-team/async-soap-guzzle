@@ -1,6 +1,6 @@
 <?php
 
-namespace Meng\AsyncSoap\Guzzle;
+namespace Wearesho\AsyncSoap\Guzzle;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Promise\FulfilledPromise;
@@ -10,6 +10,10 @@ use Meng\Soap\HttpBinding\RequestBuilder;
 use Meng\Soap\Interpreter;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * Class Factory
+ * @package Wearesho\AsyncSoap\Guzzle
+ */
 class Factory
 {
     /**
@@ -25,7 +29,7 @@ class Factory
      *                                      and connection timeout etc.
      * @return SoapClientInterface
      */
-    public function create(ClientInterface $client, $wsdl, array $options = [])
+    public function create(ClientInterface $client, $wsdl, array $options = []): SoapClientInterface
     {
         if ($this->isHttpUrl($wsdl)) {
             $httpBindingPromise = $client->requestAsync('GET', $wsdl)->then(
@@ -44,9 +48,9 @@ class Factory
         return new SoapClient($client, $httpBindingPromise);
     }
 
-    private function isHttpUrl($wsdl)
+    private function isHttpUrl($wsdl): bool
     {
-        return filter_var($wsdl, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED) !== false
+        return filter_var($wsdl, FILTER_VALIDATE_URL) !== false
             && in_array(parse_url($wsdl, PHP_URL_SCHEME), ['http', 'https']);
     }
 }

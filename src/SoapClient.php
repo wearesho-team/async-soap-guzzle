@@ -1,6 +1,6 @@
 <?php
 
-namespace Meng\AsyncSoap\Guzzle;
+namespace Wearesho\AsyncSoap\Guzzle;
 
 use Meng\AsyncSoap\SoapClientInterface;
 use Meng\Soap\HttpBinding\HttpBinding;
@@ -9,6 +9,10 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * Class SoapClient
+ * @package Wearesho\AsyncSoap\Guzzle
+ */
 class SoapClient implements SoapClientInterface
 {
     private $httpBindingPromise;
@@ -25,14 +29,33 @@ class SoapClient implements SoapClientInterface
         return $this->callAsync($name, $arguments);
     }
 
-    public function call($name, array $arguments, array $options = null, $inputHeaders = null, array &$outputHeaders = null)
-    {
+    /**
+     * @param string $name
+     * @param array $arguments
+     * @param array|null $options
+     * @param null $inputHeaders
+     * @param array|null $outputHeaders
+     *
+     * @return mixed
+     */
+    public function call(
+        $name,
+        array $arguments,
+        array $options = null,
+        $inputHeaders = null,
+        array &$outputHeaders = null
+    ) {
         $callPromise = $this->callAsync($name, $arguments, $options, $inputHeaders, $outputHeaders);
         return $callPromise->wait();
     }
 
-    public function callAsync($name, array $arguments, array $options = null, $inputHeaders = null, array &$outputHeaders = null)
-    {
+    public function callAsync(
+        $name,
+        array $arguments,
+        array $options = null,
+        $inputHeaders = null,
+        array &$outputHeaders = null
+    ): PromiseInterface {
         return \GuzzleHttp\Promise\coroutine(
             function () use ($name, $arguments, $options, $inputHeaders, &$outputHeaders) {
                 /** @var HttpBinding $httpBinding */
@@ -57,6 +80,15 @@ class SoapClient implements SoapClientInterface
         );
     }
 
+    /**
+     * @param HttpBinding $httpBinding
+     * @param ResponseInterface $response
+     * @param $name
+     * @param $outputHeaders
+     *
+     * @return mixed
+     * @throws \SoapFault
+     */
     private function interpretResponse(HttpBinding $httpBinding, ResponseInterface $response, $name, &$outputHeaders)
     {
         try {

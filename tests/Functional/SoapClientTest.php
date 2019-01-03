@@ -1,22 +1,26 @@
 <?php
 
-use GuzzleHttp\Client;
-use Meng\AsyncSoap\Guzzle\Factory;
+namespace Wearesho\AsyncSoap\Guzzle\Tests\Functional;
 
-class SoapClientTest extends PHPUnit_Framework_TestCase
+use GuzzleHttp\Client;
+use Wearesho\AsyncSoap\Guzzle\Factory;
+use PHPUnit\Framework\TestCase;
+
+/**
+ * Class SoapClientTest
+ * @package Wearesho\AsycSoap\Guzzle\Tests\Functional
+ */
+class SoapClientTest extends TestCase
 {
-    /** @var  Factory */
+    /** @var Factory */
     private $factory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->factory = new Factory();
     }
 
-    /**
-     * @test
-     */
-    public function call()
+    public function testCall(): void
     {
         $client = $this->factory->create(
             new Client(),
@@ -27,10 +31,9 @@ class SoapClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @test
      * @dataProvider webServicesProvider
      */
-    public function callAsync($wsdl, $options, $function, $args, $contains)
+    public function testCallAsync($wsdl, $options, $function, $args, $contains): void
     {
         $client = $this->factory->create(
             new Client(),
@@ -44,7 +47,7 @@ class SoapClientTest extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function webServicesProvider()
+    public function webServicesProvider(): array
     {
         return [
             [
